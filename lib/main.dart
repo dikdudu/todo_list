@@ -1,20 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:todo_list/app/database/database_adm_connection.dart';
 
 void main() {
   runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
+class MyApp extends StatefulWidget {
+  @override
+  _MyAppState createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  DataBaseAdmConnection dataBaseAdmConnection = DataBaseAdmConnection();
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(dataBaseAdmConnection);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(dataBaseAdmConnection);
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Todo List',
       theme: ThemeData(
-        primaryColor: Color(0XFF69306D),
-        buttonColor: Color(0XFFFF9129),
+        primaryColor: Color(0XFF9A48D0),
+        buttonColor: Color(0XFF9A48D0),
         textTheme: GoogleFonts.robotoTextTheme(),
       ),
       home: Scaffold(
