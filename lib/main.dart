@@ -13,7 +13,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Todo List',
       theme: ThemeData(
-        primaryColor: Color(0XFFFF9129),
+        primaryColor: Color(0XFF69306D),
         buttonColor: Color(0XFFFF9129),
         textTheme: GoogleFonts.robotoTextTheme(),
       ),
