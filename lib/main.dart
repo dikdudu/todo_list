@@ -6,6 +6,7 @@ import 'package:todo_list/app/modules/home/home_controller.dart';
 import 'package:todo_list/app/modules/home/home_page.dart';
 import 'package:todo_list/app/modules/new_task/new_task_controller.dart';
 import 'package:todo_list/app/modules/new_task/new_task_page.dart';
+import 'package:todo_list/app/repositories/todos_repository.dart';
 
 void main() {
   runApp(MyApp());
@@ -33,23 +34,32 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Todo List',
-      theme: ThemeData(
-        primaryColor: Color(0XFF9A48D0),
-        buttonColor: Color(0XFF9A48D0),
-        textTheme: GoogleFonts.robotoTextTheme(),
-      ),
-      routes: {
-        '/new': (context) => ChangeNotifierProvider(
-              create: (context) => NewTaskController(),
-              child: NewTaskPage(),
-            ),
-      },
-      home: ChangeNotifierProvider(
-        create: (_) => HomeController(),
-        child: HomePage(),
+    return MultiProvider(
+      providers: [
+        Provider(
+          create: (_) => TodosRepository(),
+        )
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Todo List',
+        theme: ThemeData(
+          primaryColor: Color(0XFF9A48D0),
+          buttonColor: Color(0XFF9A48D0),
+          textTheme: GoogleFonts.robotoTextTheme(),
+        ),
+        routes: {
+          '/new': (context) => ChangeNotifierProvider(
+                create: (context) => NewTaskController(),
+                child: NewTaskPage(),
+              ),
+        },
+        home: ChangeNotifierProvider(
+          create: (context) => HomeController(
+            repository: context.read<TodosRepository>(),
+          ),
+          child: HomePage(),
+        ),
       ),
     );
   }
