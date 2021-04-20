@@ -27,7 +27,7 @@ dependencies:
   google_fonts: ^2.0.0
   intl: ^0.17.0
   path: ^1.8.0
-  provider: ^4.0.2
+  provider: ^4.1.0
   sqflite: ^2.0.0+3
   ff_navigation_bar: ^0.1.5
 
