@@ -4,6 +4,8 @@ import 'package:provider/provider.dart';
 import 'package:todo_list/app/database/database_adm_connection.dart';
 import 'package:todo_list/app/modules/home/home_controller.dart';
 import 'package:todo_list/app/modules/home/home_page.dart';
+import 'package:todo_list/app/modules/new_task/new_task_controller.dart';
+import 'package:todo_list/app/modules/new_task/new_task_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -39,6 +41,12 @@ class _MyAppState extends State<MyApp> {
         buttonColor: Color(0XFF9A48D0),
         textTheme: GoogleFonts.robotoTextTheme(),
       ),
+      routes: {
+        '/new': (context) => ChangeNotifierProvider(
+              create: (context) => NewTaskController(),
+              child: NewTaskPage(),
+            ),
+      },
       home: ChangeNotifierProvider(
         create: (_) => HomeController(),
         child: HomePage(),
