@@ -41,6 +41,71 @@ class HomePage extends StatelessWidget {
               selectedItemLabelColor: Colors.black,
             ),
           ),
+          body: Container(
+            width: MediaQuery.of(context).size.width,
+            child: ListView.builder(
+              itemCount: 3,
+              itemBuilder: (_, index) {
+                return Column(
+                  children: [
+                    Padding(
+                      padding:
+                          const EdgeInsets.only(left: 20, top: 20, right: 20),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              'Hoje',
+                              style: TextStyle(
+                                fontSize: 30,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.add_circle,
+                              color: Theme.of(context).primaryColor,
+                              size: 30,
+                            ),
+                            onPressed: () {},
+                          )
+                        ],
+                      ),
+                    ),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: 4,
+                      itemBuilder: (_, index) {
+                        return ListTile(
+                          leading: Checkbox(
+                            value: false,
+                            onChanged: (bool value) {},
+                          ),
+                          title: Text(
+                            'Tarefa X',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                              decoration: TextDecoration.lineThrough,
+                            ),
+                          ),
+                          trailing: Text(
+                            '06:00',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 20,
+                            ),
+                          ),
+                        );
+                      },
+                    )
+                  ],
+                );
+              },
+            ),
+          ),
         );
       },
     );
