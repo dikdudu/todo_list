@@ -2,6 +2,7 @@ import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/app/modules/home/home_controller.dart';
+import 'package:todo_list/app/modules/new_task/new_task_page.dart';
 
 class HomePage extends StatelessWidget {
   @override
@@ -68,7 +69,8 @@ class HomePage extends StatelessWidget {
                               color: Theme.of(context).primaryColor,
                               size: 30,
                             ),
-                            onPressed: () {},
+                            onPressed: () => Navigator.of(context)
+                                .pushNamed(NewTaskPage.routerName),
                           )
                         ],
                       ),
