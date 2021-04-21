@@ -6,9 +6,4 @@ class HomeController extends ChangeNotifier {
   int selectedTab = 1;
 
   HomeController({@required this.repository});
-
-  void changeSelected(index) {
-    selectedTab = index;
-    notifyListeners();
-  }
 }
