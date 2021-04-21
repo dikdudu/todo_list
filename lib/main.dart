@@ -44,9 +44,9 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         title: 'Todo List',
         theme: ThemeData(
-          primaryColor: Color(0XFF9A48D0),
+          primaryColor: Color(0XFF18DCC2),
           buttonColor: Color(0XFF9A48D0),
-          textTheme: GoogleFonts.robotoTextTheme(),
+          textTheme: GoogleFonts.nunitoTextTheme(),
         ),
         routes: {
           NewTaskPage.routerName: (context) => ChangeNotifierProvider(
