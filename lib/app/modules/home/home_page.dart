@@ -11,7 +11,11 @@ class HomePage extends StatelessWidget {
       builder: (BuildContext context, HomeController controller, _) {
         return Scaffold(
           appBar: AppBar(
-            title: Text('Tarefa'),
+            backgroundColor: Colors.white,
+            title: Text(
+              'Tarefa',
+              style: TextStyle(color: Theme.of(context).primaryColor),
+            ),
           ),
           bottomNavigationBar: FFNavigationBar(
             selectedIndex: controller.selectedTab,
