@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo_list/app/shared/time_component.dart';
 
 class NewTaskPage extends StatelessWidget {
   static String routerName = 'new';
@@ -58,13 +59,7 @@ class NewTaskPage extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Text(
-                'Componente Hora',
-                style: TextStyle(
-                  color: Colors.grey[800],
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
+              TimeComponent(),
               SizedBox(height: 50),
               Container(
                 width: MediaQuery.of(context).size.width,
