@@ -1,5 +1,6 @@
 import 'package:ff_navigation_bar/ff_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_list/app/modules/home/home_controller.dart';
 import 'package:todo_list/app/modules/new_task/new_task_page.dart';
@@ -49,8 +50,22 @@ class HomePage extends StatelessWidget {
           body: Container(
             width: MediaQuery.of(context).size.width,
             child: ListView.builder(
-              itemCount: 3,
+              itemCount: controller.listTodos?.keys?.length ?? 0,
               itemBuilder: (_, index) {
+                var dateFormat = DateFormat('dd/MM/yyyy');
+                var listTodos = controller.listTodos;
+                var dayKey = listTodos.keys.elementAt(index);
+                var day = dayKey;
+                var todos = listTodos[dayKey];
+                var today = DateTime.now();
+
+                if (dayKey == dateFormat.format(today)) {
+                  day = 'Hoje';
+                } else if (dayKey ==
+                    dateFormat.format(today.add(Duration(days: 1)))) {
+                  day = 'Amanhã';
+                }
+
                 return Column(
                   children: [
                     Padding(
@@ -60,7 +75,7 @@ class HomePage extends StatelessWidget {
                         children: [
                           Expanded(
                             child: Text(
-                              'Hoje',
+                              day,
                               style: TextStyle(
                                 fontSize: 30,
                                 fontWeight: FontWeight.bold,
@@ -82,23 +97,26 @@ class HomePage extends StatelessWidget {
                     ListView.builder(
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
-                      itemCount: 4,
+                      itemCount: todos.length,
                       itemBuilder: (_, index) {
+                        var todo = todos[index];
                         return ListTile(
                           leading: Checkbox(
-                            value: false,
+                            value: todo.finished,
                             onChanged: (bool value) {},
                           ),
                           title: Text(
-                            'Tarefa X',
+                            todo.description,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
-                              decoration: TextDecoration.lineThrough,
+                              decoration: todo.finished
+                                  ? TextDecoration.lineThrough
+                                  : null,
                             ),
                           ),
                           trailing: Text(
-                            '06:00',
+                            '${todo.dateTime.hour} : ${todo.dateTime.minute}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,
