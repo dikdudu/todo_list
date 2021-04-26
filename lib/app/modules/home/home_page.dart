@@ -102,8 +102,10 @@ class HomePage extends StatelessWidget {
                         var todo = todos[index];
                         return ListTile(
                           leading: Checkbox(
+                            activeColor: Theme.of(context).primaryColor,
                             value: todo.finished,
-                            onChanged: (bool value) {},
+                            onChanged: (bool value) =>
+                                controller.checkedOrUncheck(todo),
                           ),
                           title: Text(
                             todo.description,

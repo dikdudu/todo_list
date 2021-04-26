@@ -16,11 +16,6 @@ class HomeController extends ChangeNotifier {
     findAllForWeek();
   }
 
-  void changeSelected(index) {
-    selectedTab = index;
-    notifyListeners();
-  }
-
   Future<void> findAllForWeek() async {
     var dateFormat = DateFormat('dd/MM/yyyy');
 
@@ -43,5 +38,16 @@ class HomeController extends ChangeNotifier {
     }
 
     this.notifyListeners();
+  }
+
+  void changeSelected(int index) {
+    selectedTab = index;
+    notifyListeners();
+  }
+
+  void checkedOrUncheck(TodoModel todo) {
+    todo.finished = !todo.finished;
+    this.notifyListeners();
+    repository.checkOrUncheckTodo(todo);
   }
 }
