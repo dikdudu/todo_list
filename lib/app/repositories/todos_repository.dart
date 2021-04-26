@@ -8,7 +8,7 @@ class TodosRepository {
 
     var conn = await Connection().instance;
     var result = await conn.rawQuery(
-      "select * from todo where date_time betwenn ? and ? order by date_time",
+      "select * from todo where date_time between ? and ? order by date_time",
       [startFilter.toIso8601String(), endFilter.toIso8601String()],
     );
     return result.map((t) => TodoModel.fromMap(t)).toList();
