@@ -20,7 +20,8 @@ class HomePage extends StatelessWidget {
           ),
           bottomNavigationBar: FFNavigationBar(
             selectedIndex: controller.selectedTab,
-            onSelectTab: (index) => controller.changeSelected(index),
+            onSelectTab: (index) =>
+                controller.changeSelectedTab(context, index),
             items: [
               FFNavigationBarItem(
                 iconData: Icons.check_circle,

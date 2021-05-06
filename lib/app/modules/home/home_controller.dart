@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_list/app/models/todo_model.dart';
 import 'package:todo_list/app/repositories/todos_repository.dart';
@@ -40,8 +41,19 @@ class HomeController extends ChangeNotifier {
     this.notifyListeners();
   }
 
-  void changeSelected(int index) {
+  void changeSelectedTab(BuildContext context, int index) {
     selectedTab = index;
+    switch (index) {
+      case 0:
+        filterFinalyzed();
+        break;
+      case 1:
+        findAllForWeek();
+        print(listTodos);
+        break;
+      case 2:
+        break;
+    }
     notifyListeners();
   }
 
@@ -49,5 +61,13 @@ class HomeController extends ChangeNotifier {
     todo.finished = !todo.finished;
     this.notifyListeners();
     repository.checkOrUncheckTodo(todo);
+  }
+
+  void filterFinalyzed() {
+    listTodos = listTodos.map((key, value) {
+      var todosFinalyzed = value.where((t) => t.finished).toList();
+      return MapEntry(key, todosFinalyzed);
+    });
+    notifyListeners();
   }
 }
