@@ -49,7 +49,6 @@ class HomeController extends ChangeNotifier {
         break;
       case 1:
         findAllForWeek();
-        print(listTodos);
         break;
       case 2:
         break;

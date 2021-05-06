@@ -58,6 +58,10 @@ class HomePage extends StatelessWidget {
                 var dayKey = listTodos.keys.elementAt(index);
                 var day = dayKey;
                 var todos = listTodos[dayKey];
+                if (todos.isEmpty && controller.selectedTab == 0) {
+                  return SizedBox.shrink();
+                }
+
                 var today = DateTime.now();
 
                 if (dayKey == dateFormat.format(today)) {
