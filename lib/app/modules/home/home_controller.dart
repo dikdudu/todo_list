@@ -8,6 +8,7 @@ import 'package:collection/collection.dart';
 class HomeController extends ChangeNotifier {
   final TodosRepository repository;
   int selectedTab = 1;
+  DateTime daySelected;
   DateTime startFilter;
   DateTime endFilter;
 
@@ -18,6 +19,8 @@ class HomeController extends ChangeNotifier {
   }
 
   Future<void> findAllForWeek() async {
+    daySelected = DateTime.now();
+
     var dateFormat = DateFormat('dd/MM/yyyy');
 
     startFilter = DateTime.now();
@@ -41,7 +44,7 @@ class HomeController extends ChangeNotifier {
     this.notifyListeners();
   }
 
-  void changeSelectedTab(BuildContext context, int index) {
+  Future<void> changeSelectedTab(BuildContext context, int index) async {
     selectedTab = index;
     switch (index) {
       case 0:
@@ -51,6 +54,12 @@ class HomeController extends ChangeNotifier {
         findAllForWeek();
         break;
       case 2:
+        daySelected = await showDatePicker(
+          context: context,
+          initialDate: daySelected,
+          firstDate: DateTime.now().subtract(Duration(days: (365 * 3))),
+          lastDate: DateTime.now().add(Duration(days: (365 * 10))),
+        );
         break;
     }
     notifyListeners();
