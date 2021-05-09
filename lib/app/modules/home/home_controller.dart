@@ -11,6 +11,7 @@ class HomeController extends ChangeNotifier {
   DateTime daySelected;
   DateTime startFilter;
   DateTime endFilter;
+  var dateFormat = DateFormat('dd/MM/yyyy');
 
   Map<String, List<TodoModel>> listTodos;
 
@@ -20,8 +21,6 @@ class HomeController extends ChangeNotifier {
 
   Future<void> findAllForWeek() async {
     daySelected = DateTime.now();
-
-    var dateFormat = DateFormat('dd/MM/yyyy');
 
     startFilter = DateTime.now();
 
@@ -54,12 +53,16 @@ class HomeController extends ChangeNotifier {
         findAllForWeek();
         break;
       case 2:
-        daySelected = await showDatePicker(
+        var day = await showDatePicker(
           context: context,
           initialDate: daySelected,
           firstDate: DateTime.now().subtract(Duration(days: (365 * 3))),
           lastDate: DateTime.now().add(Duration(days: (365 * 10))),
         );
+        if (day != null) {
+          daySelected = day;
+          findTodosBySelectedDay();
+        }
         break;
     }
     notifyListeners();
@@ -76,6 +79,18 @@ class HomeController extends ChangeNotifier {
       var todosFinalyzed = value.where((t) => t.finished).toList();
       return MapEntry(key, todosFinalyzed);
     });
+    notifyListeners();
+  }
+
+  Future<void> findTodosBySelectedDay() async {
+    var todos = await repository.findByPeriod(daySelected, daySelected);
+
+    if (todos.isEmpty) {
+      listTodos = {dateFormat.format(DateTime.now()): []};
+    } else {
+      listTodos =
+          groupBy(todos, (TodoModel todo) => dateFormat.format(todo.dateTime));
+    }
     notifyListeners();
   }
 }
