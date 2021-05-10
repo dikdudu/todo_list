@@ -39,7 +39,6 @@ class HomeController extends ChangeNotifier {
       listTodos =
           groupBy(todos, (TodoModel todo) => dateFormat.format(todo.dateTime));
     }
-
     this.notifyListeners();
   }
 
@@ -86,7 +85,7 @@ class HomeController extends ChangeNotifier {
     var todos = await repository.findByPeriod(daySelected, daySelected);
 
     if (todos.isEmpty) {
-      listTodos = {dateFormat.format(DateTime.now()): []};
+      listTodos = {dateFormat.format(daySelected): []};
     } else {
       listTodos =
           groupBy(todos, (TodoModel todo) => dateFormat.format(todo.dateTime));
