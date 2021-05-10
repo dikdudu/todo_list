@@ -49,10 +49,14 @@ class _MyAppState extends State<MyApp> {
           textTheme: GoogleFonts.nunitoTextTheme(),
         ),
         routes: {
-          NewTaskPage.routerName: (context) => ChangeNotifierProvider(
-                create: (context) => NewTaskController(
-                  repository: context.read<TodosRepository>(),
-                ),
+          NewTaskPage.routerName: (_) => ChangeNotifierProvider(
+                create: (context) {
+                  String day = ModalRoute.of(_).settings.arguments;
+                  return NewTaskController(
+                    repository: context.read<TodosRepository>(),
+                    day: day,
+                  );
+                },
                 child: NewTaskPage(),
               ),
         },

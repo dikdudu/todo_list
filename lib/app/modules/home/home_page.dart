@@ -93,8 +93,9 @@ class HomePage extends StatelessWidget {
                               color: Theme.of(context).primaryColor,
                               size: 30,
                             ),
-                            onPressed: () => Navigator.of(context)
-                                .pushNamed(NewTaskPage.routerName),
+                            onPressed: () => Navigator.of(context).pushNamed(
+                                NewTaskPage.routerName,
+                                arguments: dayKey),
                           )
                         ],
                       ),
