@@ -93,10 +93,13 @@ class HomePage extends StatelessWidget {
                               color: Theme.of(context).primaryColor,
                               size: 30,
                             ),
-                            onPressed: () => Navigator.of(context).pushNamed(
-                                NewTaskPage.routerName,
-                                arguments: dayKey),
-                          )
+                            onPressed: () async {
+                              await Navigator.of(context).pushNamed(
+                                  NewTaskPage.routerName,
+                                  arguments: dayKey);
+                              controller.update();
+                            },
+                          ),
                         ],
                       ),
                     ),
@@ -124,7 +127,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                           trailing: Text(
-                            '${todo.dateTime.hour} : ${todo.dateTime.minute}',
+                            '${todo.dateTime.hour.toString().padLeft(2, '0')} : ${todo.dateTime.minute.toString().padLeft(2, '0')}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 20,

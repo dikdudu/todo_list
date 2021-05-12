@@ -3,11 +3,14 @@ import 'package:intl/intl.dart';
 import 'package:todo_list/app/repositories/todos_repository.dart';
 
 class NewTaskController extends ChangeNotifier {
+  final formKey = GlobalKey<FormState>();
+  final dateFormat = DateFormat('dd/MM/yyyy');
   final TodosRepository repository;
   DateTime daySelected;
-  final dateFormat = DateFormat('dd/MM/yyyy');
   TextEditingController nameTaskController = TextEditingController();
-  var formKey = GlobalKey<FormState>();
+  bool saved = false;
+  bool loading = false;
+  String error;
 
   String get dayFormated => dateFormat.format(daySelected);
 
@@ -16,13 +19,27 @@ class NewTaskController extends ChangeNotifier {
   }
 
   String validator(value) {
+    nameTaskController.text = value;
     if (value.isEmpty) {
       return 'Nome da Tarefa e obrigatório';
     }
     return null;
   }
 
-  void save() {
-    if (formKey.currentState.validate()) {}
+  Future<void> save() async {
+    try {
+      if (formKey.currentState.validate()) {
+        loading = true;
+        saved = false;
+        await repository.saveTodo(daySelected, nameTaskController.text);
+        saved = true;
+        loading = false;
+      }
+    } catch (e) {
+      print(e);
+
+      error = 'Erro ao Salvar Tarefa';
+    }
+    notifyListeners();
   }
 }

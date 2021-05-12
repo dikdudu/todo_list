@@ -92,4 +92,12 @@ class HomeController extends ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void update() {
+    if (selectedTab == 1) {
+      this.findAllForWeek();
+    } else if (selectedTab == 2) {
+      this.findTodosBySelectedDay();
+    }
+  }
 }
