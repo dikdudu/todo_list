@@ -113,32 +113,7 @@ class _NewTaskPageState extends State<NewTaskPage> {
                     },
                   ),
                   SizedBox(height: 50),
-                  Container(
-                    width: MediaQuery.of(context).size.width,
-                    height: 40,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).primaryColor,
-                      borderRadius: BorderRadius.circular(0),
-                      boxShadow: [
-                        BoxShadow(
-                            // blurRadius: 30,
-                            // color: Theme.of(context).primaryColor,
-                            ),
-                      ],
-                    ),
-                    child: InkWell(
-                      onTap: () => controller.save(),
-                      child: Center(
-                        child: Text(
-                          'Salvar',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+                  _buildButton(controller),
                 ],
               ),
             ),
@@ -146,5 +121,64 @@ class _NewTaskPageState extends State<NewTaskPage> {
         ),
       );
     });
+  }
+
+  Widget _buildButton(NewTaskController controller) {
+    return Center(
+      child: InkWell(
+        onTap: () => !controller.saved ? controller.save() : null,
+        child: AnimatedContainer(
+          duration: Duration(milliseconds: 200),
+          curve: Curves.decelerate,
+          width: controller.saved ? 80 : MediaQuery.of(context).size.width,
+          height: controller.saved ? 80 : 40,
+          decoration: BoxDecoration(
+            color: Theme.of(context).primaryColor,
+            borderRadius: controller.saved
+                ? BorderRadius.circular(100)
+                : BorderRadius.circular(0),
+            boxShadow: [
+              controller.saved
+                  ? BoxShadow(
+                      offset: Offset(2, 2),
+                      blurRadius: 30,
+                      color: Theme.of(context).primaryColor)
+                  : BoxShadow(
+                      offset: Offset(2, 2),
+                      blurRadius: 1,
+                      color: Theme.of(context).primaryColor)
+            ],
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: !controller.saved ? 0 : 80,
+                child: AnimatedOpacity(
+                  duration: Duration(microseconds: 300),
+                  curve: Curves.easeInBack,
+                  opacity: controller.saved ? 1 : 0,
+                  child: Icon(
+                    Icons.check,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: !controller.saved,
+                child: Text(
+                  'Salvar',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 20,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

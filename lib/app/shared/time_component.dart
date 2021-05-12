@@ -15,14 +15,14 @@ class TimeComponent extends StatefulWidget {
 }
 
 class _TimeComponentState extends State<TimeComponent> {
-  final List<String> _hours = List.generate(25, (index) => index++)
+  final List<String> _hours = List.generate(24, (index) => index++)
       .map((h) => '${h.toString().padLeft(2, '0')}')
       .toList();
-  final List<String> _min = List.generate(61, (index) => index++)
+  final List<String> _min = List.generate(60, (index) => index++)
       .map((m) => '${m.toString().padLeft(2, '0')}')
       .toList();
 
-  final List<String> _sec = List.generate(61, (index) => index++)
+  final List<String> _sec = List.generate(60, (index) => index++)
       .map((s) => '${s.toString().padLeft(2, '0')}')
       .toList();
 
