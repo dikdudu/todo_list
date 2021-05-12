@@ -103,5 +103,6 @@ class HomeController extends ChangeNotifier {
 
   Future<void> deleteTodo(TodoModel todo) async {
     await repository.deleteById(todo.id);
+    this.update();
   }
 }

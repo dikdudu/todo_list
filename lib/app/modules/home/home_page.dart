@@ -9,7 +9,7 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<HomeController>(
-      builder: (BuildContext context, HomeController controller, _) {
+      builder: (BuildContext contextConsumer, HomeController controller, _) {
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.white,
@@ -50,97 +50,143 @@ class HomePage extends StatelessWidget {
           ),
           body: Container(
             width: MediaQuery.of(context).size.width,
-            child: ListView.builder(
-              itemCount: controller.listTodos?.keys?.length ?? 0,
-              itemBuilder: (_, index) {
-                var dateFormat = DateFormat('dd/MM/yyyy');
-                var listTodos = controller.listTodos;
-                var dayKey = listTodos.keys.elementAt(index);
-                var day = dayKey;
-                var todos = listTodos[dayKey];
-                if (todos.isEmpty && controller.selectedTab == 0) {
-                  return SizedBox.shrink();
-                }
+            child: RefreshIndicator(
+              onRefresh: () =>
+                  Future.delayed(Duration.zero, () => controller.update()),
+              child: ListView.builder(
+                itemCount: controller.listTodos?.keys?.length ?? 0,
+                itemBuilder: (_, index) {
+                  var dateFormat = DateFormat('dd/MM/yyyy');
+                  var listTodos = controller.listTodos;
+                  var dayKey = listTodos.keys.elementAt(index);
+                  var day = dayKey;
+                  var todos = listTodos[dayKey];
+                  if (todos.isEmpty && controller.selectedTab == 0) {
+                    return SizedBox.shrink();
+                  }
 
-                var today = DateTime.now();
+                  var today = DateTime.now();
 
-                if (dayKey == dateFormat.format(today)) {
-                  day = 'Hoje';
-                } else if (dayKey ==
-                    dateFormat.format(today.add(Duration(days: 1)))) {
-                  day = 'Amanhã';
-                }
+                  if (dayKey == dateFormat.format(today)) {
+                    day = 'Hoje';
+                  } else if (dayKey ==
+                      dateFormat.format(today.add(Duration(days: 1)))) {
+                    day = 'Amanhã';
+                  }
 
-                return Column(
-                  children: [
-                    Padding(
-                      padding:
-                          const EdgeInsets.only(left: 20, top: 20, right: 20),
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              day,
-                              style: TextStyle(
-                                fontSize: 30,
-                                fontWeight: FontWeight.bold,
+                  return Column(
+                    children: [
+                      Padding(
+                        padding:
+                            const EdgeInsets.only(left: 20, top: 20, right: 20),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                day,
+                                style: TextStyle(
+                                  fontSize: 30,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add_circle,
-                              color: Theme.of(context).primaryColor,
-                              size: 30,
+                            IconButton(
+                              icon: Icon(
+                                Icons.add_circle,
+                                color: Theme.of(context).primaryColor,
+                                size: 30,
+                              ),
+                              onPressed: () async {
+                                await Navigator.of(context).pushNamed(
+                                    NewTaskPage.routerName,
+                                    arguments: dayKey);
+                                controller.update();
+                              },
                             ),
-                            onPressed: () async {
-                              await Navigator.of(context).pushNamed(
-                                  NewTaskPage.routerName,
-                                  arguments: dayKey);
-                              controller.update();
-                            },
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: todos.length,
-                      itemBuilder: (_, index) {
-                        var todo = todos[index];
-                        return ListTile(
-                          leading: Checkbox(
-                            activeColor: Theme.of(context).primaryColor,
-                            value: todo.finished,
-                            onChanged: (bool value) =>
-                                controller.checkedOrUncheck(todo),
-                          ),
-                          title: Text(
-                            todo.description,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
-                              decoration: todo.finished
-                                  ? TextDecoration.lineThrough
-                                  : null,
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: todos.length,
+                        itemBuilder: (_, index) {
+                          var todo = todos[index];
+                          return Dismissible(
+                            key: Key(todo.id.toString()),
+                            direction: DismissDirection.endToStart,
+                            onDismissed: (_) => controller.deleteTodo(todo),
+                            confirmDismiss: (_) =>
+                                _buildConfirmDismiss(context),
+                            background: Container(
+                              alignment: AlignmentDirectional.centerEnd,
+                              color: Colors.red,
+                              child: Padding(
+                                padding: EdgeInsets.all(0),
+                                child: Icon(
+                                  Icons.delete,
+                                  color: Colors.white,
+                                ),
+                              ),
                             ),
-                          ),
-                          trailing: Text(
-                            '${todo.dateTime.hour.toString().padLeft(2, '0')} : ${todo.dateTime.minute.toString().padLeft(2, '0')}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 20,
+                            child: ListTile(
+                              leading: Checkbox(
+                                activeColor: Theme.of(context).primaryColor,
+                                value: todo.finished,
+                                onChanged: (bool value) =>
+                                    controller.checkedOrUncheck(todo),
+                              ),
+                              title: Text(
+                                todo.description,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                  decoration: todo.finished
+                                      ? TextDecoration.lineThrough
+                                      : null,
+                                ),
+                              ),
+                              trailing: Text(
+                                '${todo.dateTime.hour.toString().padLeft(2, '0')} : ${todo.dateTime.minute.toString().padLeft(2, '0')}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20,
+                                ),
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                    )
-                  ],
-                );
-              },
+                          );
+                        },
+                      )
+                    ],
+                  );
+                },
+              ),
             ),
           ),
+        );
+      },
+    );
+  }
+
+  Future<bool> _buildConfirmDismiss(BuildContext context) async {
+    return await showDialog(
+      context: context,
+      builder: (_) {
+        return AlertDialog(
+          title: const Text('Excluir'),
+          content: const Text('Confirma a Exlusão da Tarefa?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(true),
+              child: const Text(
+                'Confirmar',
+              ),
+            ),
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(false),
+              child: const Text('Cancelar'),
+            ),
+          ],
         );
       },
     );
