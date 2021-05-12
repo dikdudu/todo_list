@@ -31,6 +31,10 @@ class _NewTaskPageState extends State<NewTaskPage> {
           _scaffoldKey.currentState.showSnackBar(
             SnackBar(content: Text('Tarefa cadastrada com sucesso')),
           );
+
+          Provider.of<NewTaskController>(context, listen: false)
+              .removeListener(() {});
+
           Future.delayed(Duration(seconds: 1), () => Navigator.pop(context));
         }
       });
@@ -39,8 +43,6 @@ class _NewTaskPageState extends State<NewTaskPage> {
 
   @override
   void dispose() {
-    Provider.of<NewTaskController>(context, listen: false)
-        .removeListener(() {});
     super.dispose();
   }
 
