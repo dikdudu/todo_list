@@ -100,4 +100,8 @@ class HomeController extends ChangeNotifier {
       this.findTodosBySelectedDay();
     }
   }
+
+  Future<void> deleteTodo(TodoModel todo) async {
+    await repository.deleteById(todo.id);
+  }
 }
