@@ -31,4 +31,9 @@ class TodosRepository {
       [todo.finished ? 1 : 0, todo.id],
     );
   }
+
+  Future<void> deleteById(int id) async {
+    var conn = await Connection().instance;
+    await conn.rawDelete('DELETE FROM todo WHERE id = ?', [id]);
+  }
 }
